@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python: Listas y Colas - Tutorial Interactivo</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Prism.js for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom styles for cyberpunk theme */
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 75%, #533483 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-card {
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+        }
+        
+        .cyber-button {
+            background: linear-gradient(45deg, #06b6d4, #8b5cf6);
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        .tab-active {
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+        }
+        
+        /* Syntax highlighter custom theme */
+        .syntax-highlighter {
+            background: rgba(17, 24, 39, 0.9) !important;
+            border-radius: 0.5rem;
+            margin: 0 !important;
+        }
+        
+        pre[class*="language-"] {
+            background: transparent !important;
+            margin: 0 !important;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(31, 41, 55, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #06b6d4, #8b5cf6);
+            border-radius: 4px;
+        }
+        
+        /* Animations */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(139, 92, 246, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.8); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+    </style>
+</head>
+<body class="text-white">
+    <div class="min-h-screen p-4">
+        <!-- Header -->
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8 py-8">
+                <div class="inline-flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
+                        <i data-lucide="book-open" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                        Python: Listas y Colas
+                    </h1>
+                </div>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    Tutorial interactivo para principiantes con ejemplos del mundo real
+                </p>
+                <div class="flex justify-center gap-2 mt-4">
+                    <span class="inline-block px-3 py-1 bg-purple-800/50 text-purple-200 border border-purple-600 rounded-full text-sm">
+                        Principiantes
+                    </span>
+                    <span class="inline-block px-3 py-1 bg-blue-800/50 text-blue-200 border border-blue-600 rounded-full text-sm">
+                        Python
+                    </span>
+                    <span class="inline-block px-3 py-1 bg-cyan-800/50 text-cyan-200 border border-cyan-600 rounded-full text-sm">
+                        Interactivo
+                    </span>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="mb-6">
+                <div class="grid grid-cols-5 gap-2 bg-gray-800/50 border border-gray-700 rounded-lg p-1">
+                    <button onclick="showTab('introduction')" id="tab-introduction" class="tab-btn tab-active py-3 px-4 rounded-lg text-white font-medium transition-all">
+                        Introducción
+                    </button>
+                    <button onclick="showTab('lists')" id="tab-lists" class="tab-btn py-3 px-4 rounded-lg text-gray-300 font-medium transition-all hover:bg-gray-700">
+                        Listas
+                    </button>
+                    <button onclick="showTab('queues')" id="tab-queues" class="tab-btn py-3 px-4 rounded-lg text-gray-300 font-medium transition-all hover:bg-gray-700">
+                        Colas
+                    </button>
+                    <button onclick="showTab('example')" id="tab-example" class="tab-btn py-3 px-4 rounded-lg text-gray-300 font-medium transition-all hover:bg-gray-700">
+                        Ejemplo Real
+                    </button>
+                    <button onclick="showTab('quiz')" id="tab-quiz" class="tab-btn py-3 px-4 rounded-lg text-gray-300 font-medium transition-all hover:bg-gray-700">
+                        Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-content">
+                <!-- Introduction Tab -->
+                <div id="introduction-content" class="tab-content">
+                    <div class="glass-card rounded-lg p-6">
+                        <h2 class="text-2xl text-cyan-400 mb-4">¿Qué son las Listas y Colas?</h2>
+                        <p class="text-gray-300 mb-6">Conceptos fundamentales de estructuras de datos en Python</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-gray-900/50 p-6 rounded-lg border border-purple-600/30">
+                                <h3 class="text-xl font-semibold text-purple-400 mb-3">📋 Listas (Arrays)</h3>
+                                <p class="text-gray-300 mb-3">
+                                    Una lista es una colección ordenada de elementos que puedes:
+                                </p>
+                                <ul class="space-y-2 text-sm text-gray-400">
+                                    <li>• Acceder por índice (posición)</li>
+                                    <li>• Modificar elementos existentes</li>
+                                    <li>• Agregar y eliminar elementos</li>
+                                    <li>• Almacenar diferentes tipos de datos</li>
+                                </ul>
+                                <div class="mt-4 p-3 bg-purple-900/20 rounded">
+                                    <code class="text-purple-300">mi_lista = [1, 2, 3, "hola", True]</code>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-900/50 p-6 rounded-lg border border-cyan-600/30">
+                                <h3 class="text-xl font-semibold text-cyan-400 mb-3">🔄 Colas (Queues)</h3>
+                                <p class="text-gray-300 mb-3">
+                                    Una cola sigue el principio FIFO (First In, First Out):
+                                </p>
+                                <ul class="space-y-2 text-sm text-gray-400">
+                                    <li>• El primer elemento en entrar es el primero en salir</li>
+                                    <li>• Ideal para procesamiento secuencial</li>
+                                    <li>• Usada en sistemas de atención al cliente</li>
+                                    <li>• Manejo de tareas en orden de llegada</li>
+                                </ul>
+                                <div class="mt-4 p-3 bg-cyan-900/20 rounded">
+                                    <code class="text-cyan-300">from collections import deque</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-600/50 rounded-lg p-4">
+                            <p class="text-gray-300">
+                                <strong>💡 Consejo:</strong> En este tutorial aprenderás a usar estas estructuras de datos 
+                                con ejemplos prácticos que podrás aplicar en proyectos reales.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lists Tab -->
+                <div id="lists-content" class="tab-content hidden">
+                    <div class="glass-card rounded-lg p-6">
+                        <h2 class="text-2xl text-blue-400 mb-4">Listas en Python</h2>
+                        <p class="text-gray-300 mb-6">Aprende a manipular colecciones de datos eficientemente</p>
+                        
+                        <div class="bg-gray-900/50 p-6 rounded-lg mb-6">
+                            <h3 class="text-lg font-semibold text-blue-400 mb-4">Operaciones Básicas con Listas</h3>
+                            
+                            <div class="relative">
+                                <button onclick="copyCode('basic-list')" class="absolute top-2 right-2 z-10 bg-gray-800/80 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-all">
+                                    <i data-lucide="copy" class="w-4 h-4 inline mr-1"></i>
+                                    <span id="copy-text-basic-list">Copiar</span>
+                                </button>
+                                
+                                <pre class="syntax-highlighter"><code class="language-python" id="basic-list-code"># Lista básica en Python
+# Una lista es una colección ordenada de elementos
+
+# Crear una lista
+mi_lista = [1, 2, 3, 4, 5]
+print(f"Lista original: {mi_lista}")
+
+# Acceder a elementos (índice comienza en 0)
+primer_elemento = mi_lista[0]  # 1
+ultimo_elemento = mi_lista[-1] # 5
+print(f"Primer elemento: {primer_elemento}")
+print(f"Último elemento: {ultimo_elemento}")
+
+# Modificar elementos
+mi_lista[2] = 99
+print(f"Lista modificada: {mi_lista}")
+
+# Agregar elementos
+mi_lista.append(6)  # Agregar al final
+mi_lista.insert(0, 0)  # Insertar al inicio
+print(f"Lista con elementos agregados: {mi_lista}")
+
+# Eliminar elementos
+mi_lista.remove(99)  # Eliminar por valor
+elemento_eliminado = mi_lista.pop()  # Eliminar último elemento
+print(f"Lista después de eliminaciones: {mi_lista}")
+print(f"Elemento eliminado: {elemento_eliminado}")</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-gray-900/50 p-4 rounded-lg border border-blue-600/30">
+                                <h4 class="font-semibold text-blue-400 mb-2">Métodos Importantes</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li><code class="bg-gray-800 px-1 rounded">append()</code> - Agregar al final</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">insert()</code> - Insertar en posición</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">remove()</code> - Eliminar por valor</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">pop()</code> - Eliminar por índice</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">sort()</code> - Ordenar lista</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">reverse()</code> - Invertir orden</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-gray-900/50 p-4 rounded-lg border border-purple-600/30">
+                                <h4 class="font-semibold text-purple-400 mb-2">Propiedades Útiles</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li><code class="bg-gray-800 px-1 rounded">len(lista)</code> - Longitud</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">lista[index]</code> - Acceso</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">lista[-1]</code> - Último elemento</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">lista[:]</code> - Copiar lista</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">in</code> - Verificar existencia</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">del</code> - Eliminar elemento</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Queues Tab -->
+                <div id="queues-content" class="tab-content hidden">
+                    <div class="glass-card rounded-lg p-6">
+                        <h2 class="text-2xl text-cyan-400 mb-4">Colas en Python</h2>
+                        <p class="text-gray-300 mb-6">Implementación del principio FIFO con deque</p>
+                        
+                        <div class="bg-gray-900/50 p-6 rounded-lg mb-6">
+                            <h3 class="text-lg font-semibold text-cyan-400 mb-4">Implementación de Cola</h3>
+                            
+                            <div class="relative">
+                                <button onclick="copyCode('queue-example')" class="absolute top-2 right-2 z-10 bg-gray-800/80 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-all">
+                                    <i data-lucide="copy" class="w-4 h-4 inline mr-1"></i>
+                                    <span id="copy-text-queue-example">Copiar</span>
+                                </button>
+                                
+                                <pre class="syntax-highlighter"><code class="language-python" id="queue-example-code"># Implementación de cola usando collections.deque
+from collections import deque
+
+# Crear una cola (FIFO - First In, First Out)
+cola_supermercado = deque()
+
+# Operaciones básicas de cola
+# Encolar (agregar elementos al final)
+cola_supermercado.append("Cliente 1")
+cola_supermercado.append("Cliente 2")
+cola_supermercado.append("Cliente 3")
+print(f"Cola después de agregar clientes: {list(cola_supermercado)}")
+
+# Desencolar (eliminar elementos del frente)
+cliente_atendido = cola_supermercado.popleft()
+print(f"Cliente atendido: {cliente_atendido}")
+print(f"Cola restante: {list(cola_supermercado)}")
+
+# Verificar si la cola está vacía
+if not cola_supermercado:
+    print("La cola está vacía")
+else:
+    print(f"Clientes en espera: {len(cola_supermercado)}")
+
+# Ver quién está al frente sin eliminarlo
+if cola_supermercado:
+    print(f"Próximo cliente: {cola_supermercado[0]}")</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-gray-900/50 p-4 rounded-lg border border-cyan-600/30">
+                                <h4 class="font-semibold text-cyan-400 mb-2">Operaciones de Cola</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li><code class="bg-gray-800 px-1 rounded">append()</code> - Encolar (add)</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">popleft()</code> - Desencolar (remove)</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">clear()</code> - Vaciar cola</li>
+                                    <li><code class="bg-gray-800 px-1 rounded">len()</code> - Tamaño de cola</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-gray-900/50 p-4 rounded-lg border border-green-600/30">
+                                <h4 class="font-semibold text-green-400 mb-2">Ventajas de deque</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li>• Operaciones O(1) en ambos extremos</li>
+                                    <li>• Más eficiente que list para colas</li>
+                                    <li>• Thread-safe (seguro para hilos)</li>
+                                    <li>• Soporta operaciones adicionales</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border border-cyan-600/50 rounded-lg p-4 mt-6">
+                            <p class="text-gray-300">
+                                <strong>🎯 Importante:</strong> Usa <code class="bg-gray-800 px-1 rounded">collections.deque</code> 
+                                en lugar de listas para implementar colas, ya que es más eficiente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real World Example Tab -->
+                <div id="example-content" class="tab-content hidden">
+                    <div class="glass-card rounded-lg p-6">
+                        <h2 class="text-2xl text-pink-400 mb-4">Ejemplo Real: Sistema de Pedidos</h2>
+                        <p class="text-gray-300 mb-6">Simulación de un sistema de gestión de pedidos para restaurante</p>
+                        
+                        <div class="bg-gray-900/50 p-6 rounded-lg mb-6">
+                            <h3 class="text-lg font-semibold text-pink-400 mb-4">
+                                Sistema de Gestión de Pedidos de Restaurante
+                            </h3>
+                            
+                            <div class="relative">
+                                <button onclick="copyCode('real-world-example')" class="absolute top-2 right-2 z-10 bg-gray-800/80 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-all">
+                                    <i data-lucide="copy" class="w-4 h-4 inline mr-1"></i>
+                                    <span id="copy-text-real-world-example">Copiar</span>
+                                </button>
+                                
+                                <pre class="syntax-highlighter"><code class="language-python" id="real-world-example-code"># Ejemplo real: Sistema de gestión de pedidos de restaurante
+from collections import deque
+import time
+import random
+
+class SistemaPedidos:
+    def __init__(self):
+        self.pendientes = deque()  # Cola de pedidos pendientes
+        self.completados = []     # Lista de pedidos completados
+        self.numero_pedido = 1
+    
+    def agregar_pedido(self, cliente, items):
+        """Agrega un nuevo pedido a la cola"""
+        pedido = {
+            'numero': self.numero_pedido,
+            'cliente': cliente,
+            'items': items,
+            'hora': time.strftime("%H:%M:%S"),
+            'estado': 'pendiente'
+        }
+        self.pendientes.append(pedido)
+        self.numero_pedido += 1
+        print(f"📝 Pedido #{pedido['numero']} agregado para {cliente}")
+        return pedido['numero']
+    
+    def procesar_siguiente_pedido(self):
+        """Procesa el siguiente pedido en la cola"""
+        if not self.pendientes:
+            print("⚠️ No hay pedidos pendientes")
+            return None
+        
+        pedido = self.pendientes.popleft()
+        pedido['estado'] = 'completado'
+        pedido['hora_completado'] = time.strftime("%H:%M:%S")
+        self.completados.append(pedido)
+        
+        print(f"✅ Pedido #{pedido['numero']} completado para {pedido['cliente']}")
+        return pedido
+    
+    def mostrar_estado(self):
+        """Muestra el estado actual del sistema"""
+        print(f"\\n📊 ESTADO DEL SISTEMA")
+        print(f"🔄 Pedidos pendientes: {len(self.pendientes)}")
+        print(f"✅ Pedidos completados: {len(self.completados)}")
+        
+        if self.pendientes:
+            print("\\n📋 Próximos pedidos:")
+            for i, pedido in enumerate(self.pendientes):
+                print(f"   {i+1}. #{pedido['numero']} - {pedido['cliente']} ({len(pedido['items'])} items)")
+
+# Simulación del sistema
+sistema = SistemaPedidos()
+
+# Agregar varios pedidos
+sistema.agregar_pedido("Ana", ["Hamburguesa", "Papas fritas", "Refresco"])
+sistema.agregar_pedido("Carlos", ["Pizza familiar", "Ensalada"])
+sistema.agregar_pedido("María", ["Sushi", "Sopa miso"])
+sistema.agregar_pedido("Juan", ["Tacos", "Agua de horchata"])
+
+# Mostrar estado inicial
+sistema.mostrar_estado()
+
+# Procesar algunos pedidos
+print("\\n🍳 Procesando pedidos...")
+sistema.procesar_siguiente_pedido()
+sistema.procesar_siguiente_pedido()
+
+# Mostrar estado final
+sistema.mostrar_estado()</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-gray-900/50 p-4 rounded-lg border border-pink-600/30">
+                                <h4 class="font-semibold text-pink-400 mb-2">🍔 Aplicaciones Reales</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li>• Restaurantes</li>
+                                    <li>• Supermercados</li>
+                                    <li>• Bancos</li>
+                                    <li>• Soporte técnico</li>
+                                    <li>• Sistemas de impresión</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-gray-900/50 p-4 rounded-lg border border-yellow-600/30">
+                                <h4 class="font-semibold text-yellow-400 mb-2">⚡ Beneficios</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li>• Procesamiento justo</li>
+                                    <li>• Predecible</li>
+                                    <li>• Escalable</li>
+                                    <li>• Fácil de entender</li>
+                                    <li>• Orden garantizado</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-gray-900/50 p-4 rounded-lg border border-green-600/30">
+                                <h4 class="font-semibold text-green-400 mb-2">🔧 Características</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li>• Manejo de prioridades</li>
+                                    <li>• Seguimiento de estado</li>
+                                    <li>• Estadísticas en tiempo real</li>
+                                    <li>• Manejo de errores</li>
+                                    <li>• Registro de actividades</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-pink-900/20 to-purple-900/20 border border-pink-600/50 rounded-lg p-4 mt-6">
+                            <p class="text-gray-300">
+                                <strong>💡 Ejecuta este código:</strong> Puedes ejecutar este ejemplo directamente en tu 
+                                entorno Python para ver cómo funciona un sistema real de gestión de colas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Tab -->
+                <div id="quiz-content" class="tab-content hidden">
+                    <div class="glass-card rounded-lg p-6">
+                        <h2 class="text-2xl text-green-400 mb-4 flex items-center gap-2">
+                            <i data-lucide="trophy" class="w-6 h-6"></i>
+                            Quiz Interactivo
+                        </h2>
+                        <p class="text-gray-300 mb-6">Pon a prueba tus conocimientos sobre listas y colas</p>
+                        
+                        <div id="quiz-questions">
+                            <!-- Quiz questions will be inserted here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center py-8 mt-12 border-t border-gray-800">
+                <p class="text-gray-400">
+                    Tutorial creado con ❤️ para aprendices de Python
+                </p>
+                <div class="flex justify-center gap-4 mt-4">
+                    <span class="inline-block px-3 py-1 border border-gray-600 text-gray-400 rounded-full text-sm">
+                        Python 3.x
+                    </span>
+                    <span class="inline-block px-3 py-1 border border-gray-600 text-gray-400 rounded-full text-sm">
+                        Interactivo
+                    </span>
+                    <span class="inline-block px-3 py-1 border border-gray-600 text-gray-400 rounded-full text-sm">
+                        Práctico
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Quiz data
+        const quizQuestions = [
+            {
+                id: 'q1',
+                question: '¿Qué estructura de datos sigue el principio FIFO (First In, First Out)?',
+                options: [
+                    { id: 'a', text: 'Lista (Array)' },
+                    { id: 'b', text: 'Pila (Stack)' },
+                    { id: 'c', text: 'Cola (Queue)' },
+                    { id: 'd', text: 'Diccionario' }
+                ],
+                correct: 'c'
+            },
+            {
+                id: 'q2',
+                question: '¿Cuál es el método para agregar un elemento al final de una lista en Python?',
+                options: [
+                    { id: 'a', text: 'add()' },
+                    { id: 'b', text: 'append()' },
+                    { id: 'c', text: 'insert()' },
+                    { id: 'd', text: 'push()' }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 'q3',
+                question: 'En una cola, ¿dónde se agregan los nuevos elementos?',
+                options: [
+                    { id: 'a', text: 'Al final (rear)' },
+                    { id: 'b', text: 'Al frente (front)' },
+                    { id: 'c', text: 'En el medio' },
+                    { id: 'd', text: 'En cualquier posición' }
+                ],
+                correct: 'a'
+            },
+            {
+                id: 'q4',
+                question: '¿Qué método se usa para eliminar y retornar el primer elemento de una deque?',
+                options: [
+                    { id: 'a', text: 'remove()' },
+                    { id: 'b', text: 'delete()' },
+                    { id: 'c', text: 'popleft()' },
+                    { id: 'd', text: 'popfront()' }
+                ],
+                correct: 'c'
+            },
+            {
+                id: 'q5',
+                question: '¿Cuál es un ejemplo real del uso de colas?',
+                options: [
+                    { id: 'a', text: 'Historial de navegación web' },
+                    { id: 'b', text: 'Sistema de atención al cliente' },
+                    { id: 'c', text: 'Organización de libros en una biblioteca' },
+                    { id: 'd', text: 'Gestión de contactos telefónicos' }
+                ],
+                correct: 'b'
+            }
+        ];
+
+        let quizAnswers = {};
+        let showResults = false;
+
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => tab.classList.remove('tab-active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+            document.getElementById('tab-' + tabName).classList.add('tab-active');
+            
+            // Initialize quiz if quiz tab is selected
+            if (tabName === 'quiz') {
+                initializeQuiz();
+            }
+        }
+
+        // Copy code functionality
+        function copyCode(codeId) {
+            const codeElement = document.getElementById(codeId + '-code');
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Update button text
+            const copyText = document.getElementById('copy-text-' + codeId);
+            copyText.textContent = '¡Copiado!';
+            setTimeout(() => {
+                copyText.textContent = 'Copiar';
+            }, 2000);
+        }
+
+        // Quiz functionality
+        function initializeQuiz() {
+            const quizContainer = document.getElementById('quiz-questions');
+            
+            if (!showResults) {
+                let quizHTML = '';
+                
+                quizQuestions.forEach((q, index) => {
+                    quizHTML += `
+                        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-700 mb-4">
+                            <h3 class="text-lg font-semibold text-green-400 mb-4">
+                                ${index + 1}. ${q.question}
+                            </h3>
+                            <div class="space-y-2">
+                                ${q.options.map(option => `
+                                    <label class="flex items-center space-x-3 p-3 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-colors">
+                                        <input
+                                            type="radio"
+                                            name="${q.id}"
+                                            value="${option.id}"
+                                            onchange="handleQuizAnswer('${q.id}', '${option.id}')"
+                                            class="text-green-500 focus:ring-green-500"
+                                        />
+                                        <span class="text-gray-300">${option.text}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                quizHTML += `
+                    <div class="text-center">
+                        <button onclick="showQuizResults()" class="cyber-button px-6 py-3 rounded-lg text-white font-medium" id="quiz-submit-btn" disabled>
+                            <i data-lucide="play" class="w-4 h-4 inline mr-2"></i>
+                            Ver Resultados
+                        </button>
+                        <p class="text-sm text-gray-400 mt-2" id="quiz-instruction">
+                            Responde todas las preguntas para ver los resultados
+                        </p>
+                    </div>
+                `;
+                
+                quizContainer.innerHTML = quizHTML;
+            } else {
+                showQuizResultsContent();
+            }
+            
+            // Reinitialize icons
+            lucide.createIcons();
+        }
+
+        function handleQuizAnswer(questionId, answer) {
+            quizAnswers[questionId] = answer;
+            
+            // Check if all questions are answered
+            const submitBtn = document.getElementById('quiz-submit-btn');
+            const instruction = document.getElementById('quiz-instruction');
+            
+            if (Object.keys(quizAnswers).length === quizQuestions.length) {
+                submitBtn.disabled = false;
+                instruction.textContent = '';
+            } else {
+                submitBtn.disabled = true;
+                instruction.textContent = 'Responde todas las preguntas para ver los resultados';
+            }
+        }
+
+        function showQuizResults() {
+            showResults = true;
+            initializeQuiz();
+        }
+
+        function showQuizResultsContent() {
+            const score = calculateScore();
+            const quizContainer = document.getElementById('quiz-questions');
+            
+            let resultsHTML = `
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center gap-3 mb-4">
+                        <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center pulse-glow">
+                            <i data-lucide="trophy" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-green-400">
+                                ¡Quiz Completado!
+                            </h3>
+                            <p class="text-gray-300">
+                                Tu puntuación: ${score} / ${quizQuestions.length}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+            `;
+            
+            quizQuestions.forEach((q, index) => {
+                const isCorrect = quizAnswers[q.id] === q.correct;
+                resultsHTML += `
+                    <div class="bg-gray-900/50 p-4 rounded-lg border">
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                isCorrect ? 'bg-green-600' : 'bg-red-600'
+                            }">
+                                ${isCorrect ? 
+                                    '<i data-lucide="check" class="w-4 h-4 text-white"></i>' : 
+                                    '<span class="text-white text-sm font-bold">✗</span>'
+                                }
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-300 mb-2">
+                                    ${index + 1}. ${q.question}
+                                </p>
+                                <p class="text-sm ${isCorrect ? 'text-green-400' : 'text-red-400'}">
+                                    Tu respuesta: ${q.options.find(opt => opt.id === quizAnswers[q.id])?.text}
+                                    ${!isCorrect ? 
+                                        `<span class="ml-2 text-green-400">
+                                            (Correcta: ${q.options.find(opt => opt.id === q.correct)?.text})
+                                        </span>` : 
+                                        ''
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsHTML += `
+                </div>
+                <div class="text-center mt-6">
+                    <button onclick="resetQuiz()" class="border border-gray-600 text-gray-300 hover:bg-gray-800 px-6 py-2 rounded-lg transition-all">
+                        Reintentar Quiz
+                    </button>
+                </div>
+            `;
+            
+            quizContainer.innerHTML = resultsHTML;
+            
+            // Reinitialize icons
+            lucide.createIcons();
+        }
+
+        function calculateScore() {
+            return Object.keys(quizAnswers).filter(key => 
+                quizAnswers[key] === quizQuestions.find(q => q.id === key)?.correct
+            ).length;
+        }
+
+        function resetQuiz() {
+            quizAnswers = {};
+            showResults = false;
+            initializeQuiz();
+        }
+
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>
