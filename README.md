@@ -9,7 +9,7 @@ El propósito es comprender cómo funcionan las operaciones básicas de una cola
 
 - `README.md` → Incluye este repositorio que estas leyendo ahora mismo.😁 
 - `notebook.ipynb` → Cuaderno interactivo con explicaciones paso a paso, ideal para comprender y ejecutar el código directamente desde **Jupyter Notebook**.
-- `Pagina web educativa` → Una pagina web estatica desplegada, donde hay temas desde introducciones hasta cuestionarios sobre listas como colas.
+- `Pagina web educativa` → Una pagina web estatica, donde hay temas desde introducciones hasta cuestionarios sobre listas como colas.
 - `Ejemplo en pyhon (.py)` → Un ejemplo de estas listas usando pyhton
 ---
 
