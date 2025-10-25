@@ -36,6 +36,9 @@ cola.enqueue("C")
 
 print(cola.dequeue())  # 👉 Salida: A
 print(cola.peek())     # 👉 Salida: B
+```
+
+
 💡 Requisitos
 Asegúrate de tener instalado Python 3.8+ y Jupyter Notebook:
 pip install jupyter
