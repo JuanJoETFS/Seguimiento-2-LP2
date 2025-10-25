@@ -36,3 +36,20 @@ cola.enqueue("C")
 
 print(cola.dequeue())  # 👉 Salida: A
 print(cola.peek())     # 👉 Salida: B
+💡 Requisitos
+Asegúrate de tener instalado Python 3.8+ y Jupyter Notebook:
+pip install jupyter
+Para abrir el notebook:
+jupyter notebook notebook.ipynb
+
+🎯 Objetivo educativo
+
+Este proyecto está orientado a estudiantes y entusiastas de la programación que deseen comprender estructuras de datos básicas desde una perspectiva práctica, con ejemplos claros y código limpio.
+
+📄 Licencia
+
+Este proyecto se distribuye bajo la licencia MIT, lo que significa que puedes usarlo, modificarlo y compartirlo libremente, siempre dando el crédito correspondiente.
+
+Autor: [Juan Jose Restrepo]
+📅 Año: 2025
+🐍 Lenguaje principal: Python, html.
