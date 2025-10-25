@@ -56,4 +56,4 @@ Este proyecto se distribuye bajo la licencia MIT, lo que significa que puedes us
 
 Autor: [Juan Jose Restrepo]
 📅 Año: 2025
-🐍 Lenguaje principal: Python, html.
+🐍 Lenguajes principales:html, jupyter, python.
